@@ -2,14 +2,13 @@
 
 ## Un monde trépidant où les pokémons ont la vie dure
 
-
-<p align="center"><img src="https://laravel.com/assets/img/components/logo-laravel.svg"></p>
-
-
-## Installation nécessaire :
+## Installations nécessaires
 
 - php-sqlite3
 - sqlite3
+
+
+<p align="center"><img src="https://laravel.com/assets/img/components/logo-laravel.svg"></p>
 
 <p align="center">
 <a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
