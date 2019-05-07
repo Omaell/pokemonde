@@ -40,6 +40,7 @@ class CreatePokeapipokemonsTable extends Migration
             $table->string('pokeapi_pokemon_id_str', 80);
             $table->string('pokeapi_categ', 80)->default('stats');
             $table->string('pokeapi_categ_id_str', 80);
+            $table->unsignedSmallInteger('stat_valeur');
             $table->timestamps();
             $table->primary(['pokeapi_pokemon_id_int', 'pokeapi_pokemon_id_str', 'pokeapi_categ', 'pokeapi_categ_id_str']);	
             $table->foreign(['pokeapi_pokemon_id_int', 'pokeapi_pokemon_id_str'])
