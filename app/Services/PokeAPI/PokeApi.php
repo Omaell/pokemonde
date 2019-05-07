@@ -253,9 +253,5 @@ class PokeApi
             return [];
         }        
     }
-
-    /*
-
-   
-
+    
 }
