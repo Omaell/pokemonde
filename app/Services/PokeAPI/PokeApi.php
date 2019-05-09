@@ -16,7 +16,7 @@ class PokeApi
      *
      * @var string
      */
-    private $langue = 'fr';
+    private $langue;
 
     /**
      * Le client guzzle qui sera utilisé pour appeler la PokeAPI
@@ -136,7 +136,7 @@ class PokeApi
      *
      * @return void
      */
-    private function setListeStats() : void
+    public function setListeStats() : void
     {
         $this->liste_stats = $this->getListe( 'stat' );
     }
@@ -149,6 +149,17 @@ class PokeApi
     public function getListeStats() : array
     {
         return $this->liste_stats;
+    }
+
+    /**
+     * Change le paramètre langue
+     *
+     * @param string $langue
+     * @return void
+     */
+    public function setLangue(string $langue)
+    {
+        $this->langue = $langue;
     }
 
     /**
@@ -186,7 +197,7 @@ class PokeApi
      * initialise la langue
      * initialise le client HttpGuzzle
      */
-    function __construct(string $langue)
+    function __construct(string $langue = 'fr')
     {
         $this->langue = $langue;
         $this->client = new Client(); //GuzzleHttp\Client
@@ -215,6 +226,9 @@ class PokeApi
                         }
                     }
                 }
+                if (empty($retour['next'])) {
+                    break;
+                }
             } while($retour = $this->appelPokeAPI($retour['next'])) ;
         }
         return $liste;
@@ -241,17 +255,20 @@ class PokeApi
      * Appel du WS PokeAPI
      *
      * @param string $url
-     * @return array
+     * @return array|null
      */
-    private function appelPokeAPI(string $url) : array
+    private function appelPokeAPI(string $url) : ?array
     {
-        $retour = json_decode($this->client->get($url), true);
+        if (!empty($url))
+        {
+            $retour = json_decode($this->client->get($url)->getBody()->getContents(), true);
         
-        if (is_array($retour)) {
-            return $retour;
-        } else {
-            return [];
-        }        
+            if (is_array($retour)) {
+                return $retour;
+            } else {
+                return null;
+            }       
+        }
     }
     
 }

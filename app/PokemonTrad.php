@@ -9,12 +9,9 @@ class PokemonTrad extends Model
     protected $table = 'pokemonde_pokeapi_trad';
 
     /**
-     * Undocumented function
+     * The attributes that are mass assignable.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @var array
      */
-    public function pokemons() : \Illuminate\Database\Eloquent\Relations\HasOne
-    {
-        return $this->hasOne('App\Pokemon');
-    }
+    protected $fillable = ['pokeapi_categ', 'pokeapi_categ_id_str', 'trad_fr', 'trad_en'];
 }
