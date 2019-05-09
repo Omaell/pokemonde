@@ -13,5 +13,5 @@ class PokemonTrad extends Model
      *
      * @var array
      */
-    protected $fillable = ['pokeapi_categ', 'pokeapi_categ_id_str', 'trad_fr', 'trad_en'];
+    protected $fillable = ['pokeapi_categ', 'pokeapi_categ_id_str', 'langue', 'trad'];
 }

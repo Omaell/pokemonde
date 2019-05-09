@@ -27,6 +27,7 @@ class Pokemon extends Controller
         //
         $this->pokemonRepository->recupereTypes();
         $this->pokemonRepository->recupereStats();
+        $this->pokemonRepository->recuperePokemons();
         return Response::make('index');
     }
 

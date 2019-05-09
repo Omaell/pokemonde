@@ -11,12 +11,25 @@ class PokeApi
     const URL_POKEAPI = "https://pokeapi.co/api/v2/";
 
     /**
-     * Langue renseignée par l'utilisateur
-     * 'fr' par défaut
-     *
-     * @var string
+     * il y a plus de 900 pokemons disponibles, ça fait beaucoup à charger sachant qu'on est limité à 100 appels au WS par minute
      */
-    private $langue;
+    const NB_MAX_POKEMONS = 50;
+
+
+
+    /**
+     * Undocumented variable
+     *
+     * @var int
+     */
+    private $compteur_dappel;
+
+    /**
+     * Langues gérées par l'application
+     *
+     * @var array
+     */
+    private $langues;
 
     /**
      * Le client guzzle qui sera utilisé pour appeler la PokeAPI
@@ -44,7 +57,7 @@ class PokeApi
      *
      * @var array
      */
-    private $pokemon = array();
+    private $pokemons = array();
 
     /**
      * Liste des noms des stats en fonction de la langue demandée
@@ -95,7 +108,13 @@ class PokeApi
                 foreach ($resultats as $element) {
                     if (isset($element['url'])) {
                         $this->liste_pokemons[$element['name']] = $element['url'];
+                        if(count($this->liste_pokemons) == self::NB_MAX_POKEMONS) {
+                            return;
+                        }
                     }
+                }
+                if (empty($retour['next'])) {
+                    return;
                 }
             } while($retour = $this->appelPokeAPI($retour['next'])) ;
         }
@@ -152,41 +171,52 @@ class PokeApi
     }
 
     /**
-     * Change le paramètre langue
+     * Va chercher les langues dans le fichier .env
      *
-     * @param string $langue
      * @return void
      */
-    public function setLangue(string $langue)
+    public function setLangues()
     {
-        $this->langue = $langue;
+        $this->langues = explode(',',env('APP_LANGUAGES'));
     }
 
     /**
-     * retourne la langue choisie par l'utilisateur
+     * retourne les langues
      *
-     * @return string
+     * @return array
      */
-    public function getLangue() : string 
+    public function getLangues() : array 
     {
-        return $this->langue;
+        return $this->langues;
     }
 
-    public function setPokemon( string $url) : void 
+    /**
+     * remplit $pokemons avec toutes les informations concernant chaque pokemon
+     *
+     * @param string $url
+     * @return void
+     */
+    public function setPokemons( string $url) : void 
     {
         $retour_poke = $this->appelPokeAPI($url);
         $retour_spec = $this->appelPokeAPI($retour_poke['species']['url']);
+        $names = $this->extraireTraduction($retour_spec['names']);
 
-        $this->pokemon[$retour_poke['name']] = array(
+        $this->pokemons[$retour_poke['name']] = array(
+            'id' => $retour_poke['id'],
             'image' => $retour_poke['sprites']['front_default'],
             'stats' => $retour_poke['stats'],
             'types' => $retour_poke['types'],
-            'nom' => $this->extraireTraduction($retour_spec['names']),
+            'nom' => $names,
             'poids' => $retour_poke['weight'],
             'taille' => $retour_poke['height'],
-            'xp' => $retour_poke['base_experience'],
             'versions' => $retour_poke['game_indices'],
                 );
+    }
+
+    public function getPokemons() : array
+    {
+        return $this->pokemons;
     }
 
 
@@ -194,12 +224,12 @@ class PokeApi
     /**
      * Constructeur
      * 
-     * initialise la langue
+     * initialise les langues configurées dans .env
      * initialise le client HttpGuzzle
      */
-    function __construct(string $langue = 'fr')
+    function __construct()
     {
-        $this->langue = $langue;
+        $this->setLangues();
         $this->client = new Client(); //GuzzleHttp\Client
     }
 
@@ -238,14 +268,14 @@ class PokeApi
      * Récupère la traduction d'un terme à partir du tableau de retour du WS
      *
      * @param array $retour
-     * @return string
+     * @return array
      */
-    private function extraireTraduction(array $retour=array()) : string 
+    private function extraireTraduction(array $retour=array()) : array 
     {
-        $traduction = '';
+        $traduction = [];
         foreach ($retour as $value) {
-            if ($value['language']['name'] == $this->langue) {
-                $traduction = $value['name'];
+            if (in_array($value['language']['name'], $this->langues)) {
+                $traduction[$value['language']['name']] = $value['name'];
             }
         }
         return $traduction;
@@ -262,7 +292,11 @@ class PokeApi
         if (!empty($url))
         {
             $retour = json_decode($this->client->get($url)->getBody()->getContents(), true);
-        
+            $this->compteur_dappel ++;
+            if($this->compteur_dappel == 100) {
+                sleep(10);
+                $this->compteur_dappel = 0;
+            }
             if (is_array($retour)) {
                 return $retour;
             } else {

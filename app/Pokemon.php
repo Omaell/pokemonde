@@ -9,6 +9,13 @@ class Pokemon extends Model
     protected $table = 'pokemonde_pokeapi_pokemons';
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = ['pokeapi_pokemon_id_int', 'pokeapi_pokemon_id_str', 'pokeapi_height', 'pokeapi_weight', 'pokeapi_pokemon_sprite'];
+
+    /**
      * Les stats du pokemon
      *
      * @return \Illuminate\Database\Eloquent\Relations\belongsToMany

@@ -28,10 +28,10 @@ class CreatePokeapipokemonsTable extends Migration
         Schema::create('pokemonde_pokeapi_trad', function (Blueprint $table) {
             $table->string('pokeapi_categ', 50);
             $table->string('pokeapi_categ_id_str', 80);
-            $table->string('trad_fr');
-            $table->string('trad_en');
+            $table->string('langue');
+            $table->string('trad');
             $table->timestamps();
-            $table->primary(['pokeapi_categ', 'pokeapi_categ_id_str']);	
+            $table->primary(['pokeapi_categ', 'pokeapi_categ_id_str','langue']);	
         });
 
         // Table de liaison entre les pokemons et leurs stats
