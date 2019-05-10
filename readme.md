@@ -2,10 +2,15 @@
 
 ## Un monde trépidant où les pokémons ont la vie dure
 
-## Installations nécessaires
+## Environnement : installations nécessaires
 
 - php-sqlite3
 - sqlite3
+
+## Installation des données en base de données : commandes consoles nécessaires
+
+php artisan migration
+php artisan pokemonde:seeddb
 
 
 <p align="center"><img src="https://laravel.com/assets/img/components/logo-laravel.svg"></p>
