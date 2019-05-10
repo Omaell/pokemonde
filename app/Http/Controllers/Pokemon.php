@@ -2,19 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Repositories\PokemonRepository;
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 
 class Pokemon extends Controller
 {
 
-    protected $pokemonRepository;
-
-    public function __construct(PokemonRepository $pokemonRepository)
+    
+    public function __construct()
     {
-        $this->pokemonRepository = $pokemonRepository;
+        
     }
 
     /**
@@ -25,9 +22,7 @@ class Pokemon extends Controller
     public function index()
     {
         //
-        $this->pokemonRepository->recupereTypes();
-        $this->pokemonRepository->recupereStats();
-        $this->pokemonRepository->recuperePokemons();
+        
         return Response::make('index');
     }
 

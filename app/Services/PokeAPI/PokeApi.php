@@ -207,7 +207,7 @@ class PokeApi
             'image' => $retour_poke['sprites']['front_default'],
             'stats' => $retour_poke['stats'],
             'types' => $retour_poke['types'],
-            'nom' => $names,
+            'noms' => $names,
             'poids' => $retour_poke['weight'],
             'taille' => $retour_poke['height'],
             'versions' => $retour_poke['game_indices'],

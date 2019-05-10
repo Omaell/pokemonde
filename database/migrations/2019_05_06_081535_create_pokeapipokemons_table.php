@@ -46,9 +46,6 @@ class CreatePokeapipokemonsTable extends Migration
             $table->foreign(['pokeapi_pokemon_id_int', 'pokeapi_pokemon_id_str'])
                   ->references(['pokeapi_pokemon_id_int', 'pokeapi_pokemon_id_str'])
                   ->on('pokemonde_pokeapi_pokemons');
-            $table->foreign(['pokeapi_categ', 'pokeapi_categ_id_str'])
-                  ->references(['pokeapi_categ', 'pokeapi_categ_id_str'])
-                  ->on('pokemonde_pokeapi_trad');
         });
 
         // Table de liaison entre les pokemons et leurs types
@@ -62,9 +59,6 @@ class CreatePokeapipokemonsTable extends Migration
             $table->foreign(['pokeapi_pokemon_id_int', 'pokeapi_pokemon_id_str'])
                   ->references(['pokeapi_pokemon_id_int', 'pokeapi_pokemon_id_str'])
                   ->on('pokemonde_pokeapi_pokemons');
-            $table->foreign(['pokeapi_categ', 'pokeapi_categ_id_str'])
-                  ->references(['pokeapi_categ', 'pokeapi_categ_id_str'])
-                  ->on('pokemonde_pokeapi_trad');
         });
 
     }

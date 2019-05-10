@@ -25,13 +25,4 @@ class PokemonType extends Model
         return $this->belongsToMany('App\Pokemon');
     }
 
-    /**
-     * les traductions de ce type
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
-     */
-    public function traduction() : \Illuminate\Database\Eloquent\Relations\HasOne
-    {
-        return $this->hasOne('App\PokemonTrad');
-    }
 }
